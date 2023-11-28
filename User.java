@@ -7,9 +7,9 @@ public class User {
     private int birth_day;
     private int birth_month;
     private int birth_year;
-    private final long phone_number;
+    private String phone_number;
 
-    public User(String username, String gender, String email, String password, int birth_day, int birth_month, int birth_year, long phone_number) {
+    public User(String username, String gender, String email, String password, int birth_day, int birth_month, int birth_year, String phone_number) {
         this.username = username;
         this.gender = gender;
         this.email = email;
@@ -38,7 +38,7 @@ public class User {
         return birth_date;
     }
 
-    public long getPhone_number() {
+    public String getPhone_number() {
         return phone_number;
     }
 }

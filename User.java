@@ -1,9 +1,9 @@
 public class User {
-    private final String username;
-    private final String gender;
-    private final String email;
-    private final String password;
-    private final String birth_date;
+    private  String username;
+    private  String gender;
+    private  String email;
+    private  String password;
+    private  String birth_date;
     private int birth_day;
     private int birth_month;
     private int birth_year;

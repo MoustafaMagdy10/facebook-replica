@@ -15,11 +15,17 @@ public class User {
         this.gender = gender;
         this.email = email;
         this.password = password;
+        this.birthDay = birthDay;
+        this.birthMonth = birthMonth;
+        this.birthYear = birthYear;
         this.phoneNumber = phoneNumber;
         this.userId = ++userIdGenerator;
     }
 
     //getters
+    public int getUserId(){
+        return userId;
+    }
     public String getUserName() {
         return userName;
     }

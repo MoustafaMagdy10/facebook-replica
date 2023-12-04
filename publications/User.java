@@ -1,3 +1,10 @@
+package publications;
+
+import publications.Post;
+import publications.PublicationData;
+
+import java.util.TreeSet;
+
 public class User {
     private  String userName;
     private static int userIdGenerator = 0;
@@ -10,6 +17,8 @@ public class User {
     private int birthYear;
     private String phoneNumber;
 
+    private TreeSet<Integer> posts = new TreeSet<>();
+
     public User(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber) {
         this.userName = userName;
         this.gender = gender;
@@ -19,11 +28,11 @@ public class User {
         this.birthMonth = birthMonth;
         this.birthYear = birthYear;
         this.phoneNumber = phoneNumber;
-        this.userId = ++userIdGenerator;
+        this.userId = userIdGenerator++;
     }
 
     //getters
-    public int getUserId(){
+    public int getId(){
         return userId;
     }
     public String getUserName() {
@@ -90,5 +99,33 @@ public class User {
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    //functionality
+
+    public void addPost(int publisherId, String content, boolean isPublic){
+        Post post = new Post(publisherId,content, isPublic);
+        posts.add(post.getId());
+        PublicationData.postStore.add(post);
+    }
+
+
+    //returns array of all posts created by the user
+    public Post[] getPosts(){
+        //creates array of Post objects with the oldest Post being first in array
+        Post[] postArr = new Post[posts.size()];
+        int cnt=0;
+        for(int post : posts){
+            postArr[cnt++] = PublicationData.postStore.get(post);
+        }
+        //reverses the array so that the latest reply is the first element
+        for(int i=0; i<postArr.length/2; i++){
+            Post tmp = postArr[i];
+            postArr[i] = postArr[postArr.length - i - 1];
+            postArr[postArr.length - i - 1] = tmp;
+        }
+
+        return postArr;
+
     }
 }

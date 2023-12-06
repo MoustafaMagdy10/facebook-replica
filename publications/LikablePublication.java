@@ -1,6 +1,5 @@
 package publications;
 
-import java.util.ArrayList;
 import java.util.NoSuchElementException;
 import java.util.TreeSet;
 //this is an abstract class that has data and methods
@@ -35,10 +34,10 @@ public abstract class LikablePublication {
 
     //returns array of Users who liked the publication
     public User[] getLikes(){
-        User[] likers = new User [likes.size()];
+        User[] likers = new User[likes.size()];
         int cnt = 0;
         for(int liker : likes){
-            likers[cnt++] = PublicationData.userStore.get(liker);
+            likers[cnt++] = User.userStore.get(liker);
         }
 
         for(int i=0; i<likers.length/2; i++){

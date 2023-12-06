@@ -1,8 +1,9 @@
 package publications;
 
 import publications.Post;
-import publications.PublicationData;
 
+
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class User {
@@ -17,6 +18,8 @@ public class User {
     private int birthYear;
     private String phoneNumber;
 
+    static ArrayList<User> userStore = new ArrayList<User>();
+    private static ArrayList<Post> postStore = new ArrayList<Post>();
     private TreeSet<Integer> posts = new TreeSet<>();
 
     public User(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber) {
@@ -29,6 +32,7 @@ public class User {
         this.birthYear = birthYear;
         this.phoneNumber = phoneNumber;
         this.userId = userIdGenerator++;
+        userStore.add(this);
     }
 
     //getters
@@ -103,12 +107,20 @@ public class User {
 
     //functionality
 
-    public void addPost(int publisherId, String content, boolean isPublic){
-        Post post = new Post(publisherId,content, isPublic);
+    public void addPost(String content, boolean isPublic){
+        Post post = new Post(userId ,content, isPublic);
         posts.add(post.getId());
-        PublicationData.postStore.add(post);
+        postStore.add(post);
     }
 
+    public static User[] getUsers(){
+        User[] userArr = new User[userStore.size()];
+        int cnt = 0;
+        for(User user : userStore){
+            userArr[cnt++] = user;
+        }
+        return userArr;
+    }
 
     //returns array of all posts created by the user
     public Post[] getPosts(){
@@ -116,7 +128,7 @@ public class User {
         Post[] postArr = new Post[posts.size()];
         int cnt=0;
         for(int post : posts){
-            postArr[cnt++] = PublicationData.postStore.get(post);
+            postArr[cnt++] = postStore.get(post);
         }
         //reverses the array so that the latest reply is the first element
         for(int i=0; i<postArr.length/2; i++){

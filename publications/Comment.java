@@ -1,11 +1,13 @@
 package publications;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class Comment extends LikablePublication {
     private static int commentIdGenerator = 0;
     private final int commentId;
 
-    TreeSet<Integer> replies = new TreeSet<Integer>(); // carries the Ids of the replies that were made on the comment
+    static private ArrayList<Reply> replyStore = new ArrayList<Reply>();
+    private TreeSet<Integer> replies = new TreeSet<Integer>(); // carries the Ids of the replies that were made on the comment
 
     public Comment(int publisherId, String content){
         super(publisherId,content);
@@ -17,7 +19,7 @@ public class Comment extends LikablePublication {
     public void addReply(int publisherId, String content){
         Reply reply = new Reply(publisherId, content);
         replies.add(reply.getId());
-        PublicationData.replyStore.add(reply);
+        replyStore.add(reply);
     }
 
     public int getId(){
@@ -31,7 +33,7 @@ public class Comment extends LikablePublication {
         Reply[] replyArr = new Reply[replies.size()];
         int cnt=0;
         for(int reply : replies){
-           replyArr[cnt++] = PublicationData.replyStore.get(reply);
+           replyArr[cnt++] = replyStore.get(reply);
         }
         //reverses the array so that the latest reply is the first element
         for(int i=0; i<replyArr.length/2; i++){

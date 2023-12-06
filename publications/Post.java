@@ -1,5 +1,5 @@
 package publications;
-
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 public class Post extends LikablePublication {
@@ -8,9 +8,10 @@ public class Post extends LikablePublication {
 
     private boolean isPublic;
 
-    TreeSet<Integer> tags = new TreeSet<Integer>();
+    private static ArrayList<Comment> commentStore = new ArrayList<Comment>();
+    private TreeSet<Integer> tags = new TreeSet<Integer>();
 
-    TreeSet<Integer> comments = new TreeSet<Integer>();
+    private TreeSet<Integer> comments = new TreeSet<Integer>();
 
     public Post(int publisherId, String content, boolean isPublic){
         super(publisherId,content);
@@ -22,7 +23,7 @@ public class Post extends LikablePublication {
     public void addComment(int publisherId, String content){
         Comment comment = new Comment(publisherId, content);
         comments.add(comment.getId());
-        PublicationData.commentStore.add(comment);
+        commentStore.add(comment);
     }
 
     //returns array of all comments created on post
@@ -31,7 +32,7 @@ public class Post extends LikablePublication {
         Comment[] commentArr = new Comment[comments.size()];
         int cnt=0;
         for(int comment : comments){
-            commentArr[cnt++] = PublicationData.commentStore.get(comment);
+            commentArr[cnt++] = commentStore.get(comment);
         }
         //reverses the array so that the latest reply is the first element
         for(int i=0; i<commentArr.length/2; i++){
@@ -50,11 +51,11 @@ public class Post extends LikablePublication {
 
     //returns array of all users who were tagged in the post
     public User[] getTags(){
-        //creates array of User objects with the oldest User being first in array
+        //creates array of publications.User objects with the oldest publications.User being first in array
         User[] userArr = new User[tags.size()];
         int cnt=0;
         for(int user : tags){
-            userArr[cnt++] = PublicationData.userStore.get(user);
+            userArr[cnt++] = User.userStore.get(user);
         }
         //reverses the array so that the latest reply is the first element
         for(int i=0; i<userArr.length/2; i++){

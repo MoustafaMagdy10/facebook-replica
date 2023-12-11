@@ -19,11 +19,26 @@ public class Post extends LikablePublication {
         postId = postIdGenerator++;
     }
 
-
     public void addComment(int publisherId, String content){
         Comment comment = new Comment(publisherId, content);
         comments.add(comment.getId());
         commentStore.add(comment);
+    }
+
+    public static void loadComment(int publisherId, String content){
+        Comment comment = new Comment(publisherId, content);
+        commentStore.add(comment);
+    }
+
+
+    public static Comment[] exportComments(){
+        Comment[] arr = new Comment[commentStore.size()];
+        int cnt = 0;
+        for(Comment comment : commentStore){
+            arr[cnt++] = comment;
+        }
+
+        return arr;
     }
 
     //returns array of all comments created on post
@@ -42,7 +57,6 @@ public class Post extends LikablePublication {
         }
 
         return commentArr;
-
     }
 
     public void tagUser(int userId){
@@ -55,7 +69,7 @@ public class Post extends LikablePublication {
         User[] userArr = new User[tags.size()];
         int cnt=0;
         for(int user : tags){
-            userArr[cnt++] = User.userStore.get(user);
+            userArr[cnt++] = User.getUserById(user);
         }
         //reverses the array so that the latest reply is the first element
         for(int i=0; i<userArr.length/2; i++){

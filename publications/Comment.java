@@ -22,6 +22,24 @@ public class Comment extends LikablePublication {
         replyStore.add(reply);
     }
 
+    //allows file processing to load the replies they read form the text files
+    public static void loadReply(int publisherId, String content){
+        Reply reply = new Reply(publisherId, content);
+        replyStore.add(reply);
+    }
+
+    //returns array of all replies in the system for the file processing
+    public static Reply[] exportReply(){
+        Reply[] arr = new Reply[replyStore.size()];
+        int cnt = 0;
+        for(Reply reply : replyStore){
+            arr[cnt++] = reply;
+        }
+
+        return arr;
+    }
+
+
     public int getId(){
         return commentId;
     }

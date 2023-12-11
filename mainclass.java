@@ -6,7 +6,7 @@ public class mainclass {
     public static void main(String[] args){
         User user1 = new User("mostafa", "male","m@gmail.com", "pass",20,1,22,"12");
         User user2 = new User("gamal", "male","m@gmail.com", "pass",20,1,22,"12");
-        User[] users = User.getUsers();
+        User[] users = User.exportUsers();
 
         for(User user : users){
             System.out.println(user.getUserName());

@@ -122,6 +122,10 @@ public class User {
         return userArr;
     }
 
+    public static User getUserById(int userId){
+        return userStore.get(userId);
+    }
+
     //returns array of all posts created by the user
     public Post[] getPosts(){
         //creates array of Post objects with the oldest Post being first in array

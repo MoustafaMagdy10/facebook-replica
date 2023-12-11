@@ -14,9 +14,14 @@ public class User {
     private int birthYear;
     private String phoneNumber;
 
+    private Boolean showMyFriends=true;
+
     private static ArrayList<User> userStore = new ArrayList<User>();
     private static ArrayList<Post> postStore = new ArrayList<Post>();
     private TreeSet<Integer> posts = new TreeSet<>();
+    private ArrayList<User> friends = new ArrayList<>();
+    private ArrayList<User> pending = new ArrayList<>();
+
 
     public User(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber) {
         this.userName = userName;
@@ -66,6 +71,9 @@ public class User {
     public String getPhoneNumber() {
         return phoneNumber;
     }
+    public Boolean getShowMyFriends() {
+        return showMyFriends;
+    }
 
     //setters
 
@@ -101,6 +109,11 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
+    public void setShowMyFriends(Boolean showMyFriends) {
+        this.showMyFriends = showMyFriends;
+    }
+
+
     //functionality
 
     //used to add post in program runtime
@@ -108,6 +121,114 @@ public class User {
         Post post = new Post(userId ,content, isPublic);
         posts.add(post.getId());
         postStore.add(post);
+    }
+
+    //Friends
+    private void notifyObserver(User friend) {
+       friend.update(this.userName + " has sent you a friend request");
+    }
+    private void update(String message) {
+        System.out.println(message);
+    }
+    private User searchUser(String friendName ,Boolean inPending ){
+        User friend = null;
+       if(!inPending){
+
+           for (User it: userStore){
+               if (friendName.toUpperCase().equals(it.userName.toUpperCase())){
+                   friend = it;
+               }
+           }
+
+       }else{
+           for (User it: this.pending){
+               if (friendName.toUpperCase().equals(it.getUserName().toUpperCase())){
+                   friend = it;
+               }
+           }
+       }
+        if(friend != null){
+            return friend;
+        }
+        return null;
+    }
+    public void sendFriendRequest(String friendName){
+        User friend = searchUser(friendName , false);
+        if(friend != null){
+            friend.pending.add(this);
+            this.notifyObserver(friend);
+        }
+        else
+            System.out.println("No one such name exist");
+    }
+    public void acceptFriendRequest(String friendName){
+
+
+        User friend = searchUser(friendName , true);;
+        if(friend != null){
+            this.pending.remove(friend);
+            this.friends.add(friend);
+            friend.friends.add(this);
+        }
+        else{
+            System.out.println("No one with such a name exists");
+        }
+
+    }
+    public void rejectFriendRequest(String friendName){
+        User friend = searchUser(friendName , true);;
+        if(friend != null){
+            this.pending.remove(friend);
+        }
+        else{
+            System.out.println("No one with such a name exists");
+        }
+    }
+    public void showFriendRequests(){
+        if(this.pending.isEmpty()){
+            System.out.println("No friend request found");
+            return;
+        }
+        for (User it : this.pending  ){
+            System.out.println(it.userName);
+        }
+    }
+    public void showFriends(){
+        for (User it : this.friends  ){
+            System.out.println(it.userName);
+        }
+    }
+    public void showFriends(String name ){
+        User friend = searchUser(name ,false );
+        if(friend == null)
+            return;
+        if(friend.friends.isEmpty()){
+            System.out.println("No friends found");
+            return;
+        }
+        if(friend.getShowMyFriends()) {
+            for (User it : friend.friends) {
+                System.out.println(it.userName);
+            }
+        }
+        else{
+            System.out.println("You can't see " + friend.userName + "'s friends");
+        }
+    }
+    public void showMutualFriends(String friendName){
+        User friend = searchUser(friendName , false);
+        if(friend == null){
+            System.out.println("No such a friend exists");
+            return;
+        }
+        for (User it : this.friends){
+            for(User it2 : friend.friends){
+                if(it.userName.equals(it2.userName)){
+                    System.out.println(it.userName);
+                }
+            }
+        }
+
     }
 
     //for loading from file when starting program

@@ -55,12 +55,16 @@ public class Chat {
     public void addMessage(int senderId,String content) {
         Message newMessage = new Message(senderId,content);       //        create new Messege Object
 //        check senderID and add created Meesege object inside array list
-        for (int i=0 ; i< getParticipants().length;i++){
+        boolean patricipant=false;
+        for (int i=0 ; i< getParticipants().length;i++)
             if (senderId== getParticipants()[i].getId()){
-                this.messages.add(newMessage);
+                patricipant=true;
                 break;
             }
-        }
+        if (patricipant)
+            this.messages.add(newMessage);
+        else
+            System.out.println("the user "+ User.getUserById(senderId).getId()+" is not allowed to send message on this chat.");
     }
 
     // Method to add participant to the chat

@@ -31,9 +31,12 @@ public class Chat {
 
     // Getters for messages and participants
 
-    public ArrayList<Message> getMessages() {
-        ArrayList<Message> messages1= new ArrayList<>();
-        messages1=messages;
+    public Message[] getMessages() {
+        Message [] messages1 = new Message[messages.size()];
+        int cnt = 0;
+        for (Message message : messages){
+            messages1[cnt++]= (message);
+        }
         return messages1;
     }
 
@@ -49,11 +52,15 @@ public class Chat {
 
     // Method to add message to the chat
 
-    public void addMessage(int participantsId,String content) {
-         Message newMessage = new Message(participantsId,content);
-//        create new Messege Object
-//        add created Meesege object inside array list
-     this.messages.add(newMessage);
+    public void addMessage(int senderId,String content) {
+        Message newMessage = new Message(senderId,content);       //        create new Messege Object
+//        check senderID and add created Meesege object inside array list
+        for (int i=0 ; i< getParticipants().length;i++){
+            if (senderId== getParticipants()[i].getId()){
+                this.messages.add(newMessage);
+                break;
+            }
+        }
     }
 
     // Method to add participant to the chat
@@ -97,10 +104,10 @@ public class Chat {
             while ((line = reader.readLine()) != null) {
                 if (line.startsWith("Chat Name: ")) {
                     this.chatName = line.substring("Chat Name: ".length());
-                    System.out.println(line);
+//                    System.out.println(line);
                 } else if (line.equals("Messages:")) {
                     while ((line = reader.readLine()) != null && !line.equals("Participants:")) {
-                        System.out.println(line);
+//                    System.out.println(line);
                     }
                 }
             }

@@ -12,9 +12,9 @@ public class mainclass {
             System.out.println(user.getUserName());
         }
 
-        user1.addPost("this is the first post by user 1", true);
-        user2.addPost("this is first post by user 2", true);
-        user1.addPost("this is second post by user 1", true);
+        user1.addPost("this is the first post by user 1", true); //0
+        user2.addPost("this is first post by user 2", true); //1
+        user1.addPost("this is second post by user 1", true); //2
 
         Post[] user1Posts = user1.getPosts();
 

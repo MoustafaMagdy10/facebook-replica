@@ -1,4 +1,6 @@
 package publications;
+import com.sun.source.tree.Tree;
+
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -29,6 +31,11 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.userId = userIdGenerator++;
         userStore.add(this);
+    }
+
+    User(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts){
+        this(userName, gender, email, password, birthDay, birthMonth, birthYear, phoneNumber);
+        this.posts = posts;
     }
 
     //getters
@@ -105,14 +112,14 @@ public class User {
 
     //used to add post in program runtime
     public void addPost(String content, boolean isPublic){
-        Post post = new Post(userId ,content, isPublic);
+        Post post = new Post(this.userId ,content, isPublic);
         posts.add(post.getId());
         postStore.add(post);
     }
 
     //for loading from file when starting program
-    public static void loadPost(int publisherId,String content, boolean isPublic){
-        Post post = new Post(publisherId ,content, isPublic);
+    public static void loadPost(int publisherId,String content, boolean isPublic, TreeSet<Integer>likes,TreeSet<Integer> tags,TreeSet<Integer> comments){
+        Post post = new Post(publisherId ,content, isPublic, likes, tags, comments);
         postStore.add(post);
     }
 
@@ -137,9 +144,9 @@ public class User {
         return userArr;
     }
 
-    public static void loadUser(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber){
-       User user = new User(userName,gender,email,password,birthDay,birthMonth,birthYear,phoneNumber);
-       userStore.add(user);
+    public static void loadUser(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts){
+       User user = new User(userName,gender,email,password,birthDay,birthMonth,birthYear,phoneNumber, posts);
+//       userStore.add(user);
     }
 
     //returns the User of the specified

@@ -117,13 +117,13 @@ public class User {
     }
 
     // Friends
-    private void notifyObserver(User friend) {
-        friend.update(this.userName + " has sent you a friend request");
-    }
+    // private void notifyObserver(User friend) {
+    //     friend.update(this.userName + " has sent you a friend request");
+    // }
 
-    private void update(String message) {
-        System.out.println(message);
-    }
+    // private void update(String message) {
+    //     System.out.println(message);
+    // }
 
     private User getUserByName(String friendName) {
         User friend = null;
@@ -142,7 +142,7 @@ public class User {
         User friend = getUserByName(friendName);
         if (friend != null) {
             friend.pending.add(userId);
-            this.notifyObserver(friend);
+            // this.notifyObserver(friend);
             return true;
         }
         return false;
@@ -171,7 +171,7 @@ public class User {
         return false;
     }
 
-    public User[] showFriendRequests() {
+    public User[] getFriendRequests() {
         User arr[] = new User[pending.size()];
         if (pending.isEmpty()) {
             return null;
@@ -183,7 +183,7 @@ public class User {
         return arr;
     }
 
-    public User[] showFriends() {
+    public User[] getFriends() {
 
         if (friends.isEmpty()) {
             return null;
@@ -196,8 +196,8 @@ public class User {
         return arr;
     }
 
-    public User[] showFriends(String name) {
-        User arr[] = getUserByName(name).showFriends();
+    public User[] getFriends(String name) {
+        User arr[] = getUserByName(name).getFriends();
         return arr;
     }
 

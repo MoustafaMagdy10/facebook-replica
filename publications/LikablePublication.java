@@ -4,7 +4,7 @@ import java.util.NoSuchElementException;
 import java.util.TreeSet;
 //this is an abstract class that has data and methods
 // common to all types of publication (posts,comments and replies)
-public abstract class LikablePublication {
+public abstract class LikablePublication{
     private final int publisherId;
     private final String content;
     private TreeSet<Integer> likes = new TreeSet<Integer>();
@@ -37,9 +37,9 @@ public abstract class LikablePublication {
         User[] likers = new User[likes.size()];
         int cnt = 0;
         for(int liker : likes){
-            likers[cnt++] = User.userStore.get(liker);
+            likers[cnt++] = User.getUserById(liker);
         }
-
+        //reverse array so that newest like is the first in the array
         for(int i=0; i<likers.length/2; i++){
             User tmp = likers[i];
             likers[i] = likers[likers.length - i - 1];

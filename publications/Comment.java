@@ -14,6 +14,16 @@ public class Comment extends LikablePublication {
         commentId = commentIdGenerator++;
     }
 
+    //a constructor only visible within package that will be called by the loadComment method
+    Comment(int publisherId, String content, TreeSet<Integer> likes, TreeSet<Integer> replies){
+        this(publisherId,content);
+        for(int like : likes){
+            this.addLike(like);
+        }
+
+        this.replies = replies;
+    }
+
     //creates a Reply object, places the ID of the reply in the replies TreeSet and then
     //places the object in the array for storing replies
     public void addReply(int publisherId, String content){
@@ -21,6 +31,24 @@ public class Comment extends LikablePublication {
         replies.add(reply.getId());
         replyStore.add(reply);
     }
+
+    //allows file processing to load the replies they read form the text files
+    public static void loadReply(int publisherId, String content, TreeSet<Integer> likes){
+        Reply reply = new Reply(publisherId, content, likes);
+        replyStore.add(reply);
+    }
+
+    //returns array of all replies in the system for the file processing
+    public static Reply[] exportReply(){
+        Reply[] arr = new Reply[replyStore.size()];
+        int cnt = 0;
+        for(Reply reply : replyStore){
+            arr[cnt++] = reply;
+        }
+
+        return arr;
+    }
+
 
     public int getId(){
         return commentId;

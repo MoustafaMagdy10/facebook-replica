@@ -6,15 +6,15 @@ public class mainclass {
     public static void main(String[] args){
         User user1 = new User("mostafa", "male","m@gmail.com", "pass",20,1,22,"12");
         User user2 = new User("gamal", "male","m@gmail.com", "pass",20,1,22,"12");
-        User[] users = User.getUsers();
+        User[] users = User.exportUsers();
 
         for(User user : users){
             System.out.println(user.getUserName());
         }
 
-        user1.addPost("this is the first post by user 1", true);
-        user2.addPost("this is first post by user 2", true);
-        user1.addPost("this is second post by user 1", true);
+        user1.addPost("this is the first post by user 1", true); //0
+        user2.addPost("this is first post by user 2", true); //1
+        user1.addPost("this is second post by user 1", true); //2
 
         Post[] user1Posts = user1.getPosts();
 

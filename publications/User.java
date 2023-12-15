@@ -324,6 +324,12 @@ public class User {
 
     }
 
+    public void startChat(String chatName, TreeSet<Integer> participantsId){
+        Chat chat = new Chat(chatName,participantsId);
+        chatStore.add(chat);
+    }
+
+
     public Chat[] getChats(){
        Chat[] arr = new Chat[chats.size()];
        int cnt = 0;

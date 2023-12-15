@@ -4,19 +4,22 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.TreeSet;
+
 import publications.User;
 
 public class Chat {
     private String chatName;
     private static int chatIdGenerator = 0;
-    private ArrayList<Message> messages;
+    private static ArrayList<Message> messageStore=new ArrayList<>();
     private ArrayList<Integer> participantsId;
+    private TreeSet<Integer> messages = new TreeSet<Integer>();
+
 
     public Chat(String chatName, ArrayList<Integer> participants) {
         this.chatName = chatName;
-        this.messages= new ArrayList<>();
-       this.participantsId = participants;
-       chatIdGenerator++;
+        this.participantsId = participants;
+        chatIdGenerator++;
     }
 
     // Getters and setters for chatName
@@ -29,19 +32,19 @@ public class Chat {
         this.chatName = chatName;
     }
 
-    // Getters for messages and participants
 
+    // Getters for messages and participants
     public Message[] getMessages() {
-        Message [] messages1 = new Message[messages.size()];
+        Message [] messagesArr = new Message[messages.size()];
         int cnt = 0;
-        for (Message message : messages){
-            messages1[cnt++]= (message);
+        for (Integer message : messages){
+            messagesArr[cnt++]= messageStore.get(message);
         }
-        return messages1;
+        return messagesArr;
     }
 
     public User[] getParticipants() {
-    //return array/arraylist of User objects
+    //return array of User objects
         User [] participants = new User[participantsId.size()];
         int cnt = 0;
         for (int participant : participantsId){
@@ -53,16 +56,17 @@ public class Chat {
     // Method to add message to the chat
 
     public void addMessage(int senderId,String content) {
-        Message newMessage = new Message(senderId,content);       //        create new Messege Object
-//        check senderID and add created Meesege object inside array list
+        Message newMessage = new Message(senderId,content);       //        create new Message Object
+//        check senderID and add created Message object inside array list
         boolean patricipant=false;
         for (int i=0 ; i< getParticipants().length;i++)
             if (senderId== getParticipants()[i].getId()){
                 patricipant=true;
                 break;
             }
-        if (patricipant)
-            this.messages.add(newMessage);
+        if (patricipant){
+            messages.add(newMessage.getSenderId());
+            messageStore.add(newMessage);}
         else
             System.out.println("the user "+ User.getUserById(senderId).getId()+" is not allowed to send message on this chat.");
     }
@@ -86,7 +90,7 @@ public class Chat {
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName,true))) {
             writer.println("Chat Name: " + chatName);
             writer.println("Messages:");
-            for (Message message : messages) {
+            for (Message message : messageStore) {
                 writer.print(message.toString());
                 writer.println();
             }

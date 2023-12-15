@@ -37,7 +37,7 @@ public class Chat {
     public Message[] getMessages() {
         Message [] messagesArr = new Message[messages.size()];
         int cnt = 0;
-        for (Integer message : messages){
+        for (int message : messages){
             messagesArr[cnt++]= messageStore.get(message);
         }
         return messagesArr;
@@ -65,7 +65,7 @@ public class Chat {
                 break;
             }
         if (patricipant){
-            messages.add(newMessage.getSenderId());
+            messages.add(newMessage.getMessageId());
             messageStore.add(newMessage);}
         else
             System.out.println("the user "+ User.getUserById(senderId).getId()+" is not allowed to send message on this chat.");
@@ -79,8 +79,8 @@ public class Chat {
 
     // Method to remove participant from the chat
 
-    public void removeParticipant(User user) {
-        participantsId.remove(user);
+    public void removeParticipant(int userId) {
+        participantsId.remove(userId);
     }
 
     // Method to save chat data to a file

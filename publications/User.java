@@ -125,17 +125,20 @@ public class User {
     //     System.out.println(message);
     // }
 
-    private User getUserByName(String friendName) {
-        User friend = null;
+
+    //returns User object with name matching the nama given. if no match found returns null
+    public User getUserByName(String name) {
+        User user= null;
         for (User it : userStore) {
-            if (friendName.toUpperCase().equals(it.getUserName().toUpperCase())) {
-                friend = it;
+            if (name.toUpperCase().equals(it.getUserName().toUpperCase())) {
+                user = it;
             }
         }
-        if (friend != null) {
-            return friend;
+        if (user != null) {
+            return user;
+        }else{
+            return null;
         }
-        return null;
     }
 
     public boolean sendFriendRequest(String friendName) {
@@ -148,34 +151,43 @@ public class User {
         return false;
     }
 
+    //accepts friend request of user with the given name is a request exists.
+    //return false if user does not exist or is not in pending
     public boolean acceptFriendRequest(String friendName) {
-
         User friend = getUserByName(friendName);
-        boolean isPending = pending.contains(friend.getId());
-        if (isPending && friend != null) {
-            pending.remove(friend.userId);
-            friends.add(friend.userId);
-            friend.friends.add(userId);
-            return true;
+        if(friend != null){
+            boolean isPending = pending.contains(friend.getId());
+            if(isPending){
+                pending.remove(friend.userId);
+                friends.add(friend.userId);
+                friend.friends.add(userId);
+                return true;
+            }
         }
         return false;
     }
 
+    //returns true if rejecting the request was successful
+    //returns false if user does not exist or did not send a friend request
     public boolean rejectFriendRequest(String friendName) {
         User friend = getUserByName(friendName);
-        boolean isPending = pending.contains(friend.getId());
-        if (isPending && friend != null) {
-            pending.remove(friend.userId);
-            return true;
+        if(friend != null){
+            boolean isPending = pending.contains(friend.getId());
+            if (isPending) {
+                pending.remove(friend.getId());
+                return true;
+            }
         }
         return false;
     }
 
+    //returns array of User objects that have sent friend requests
+    //returns null if no friend requests are present
     public User[] getFriendRequests() {
-        User arr[] = new User[pending.size()];
         if (pending.isEmpty()) {
             return null;
         }
+        User[] arr = new User[pending.size()];
         int i = 0;
         for (int it : pending) {
             arr[i++] = getUserById(it);
@@ -183,8 +195,9 @@ public class User {
         return arr;
     }
 
+    //get friends of user on which the method is called
+    //return null if user has no friends
     public User[] getFriends() {
-
         if (friends.isEmpty()) {
             return null;
         }
@@ -196,18 +209,21 @@ public class User {
         return arr;
     }
 
+    //overloaded function getFriends that gets the friends of a user using his name
+    //returns null if specified user has no friends
     public User[] getFriends(String name) {
         User arr[] = getUserByName(name).getFriends();
         return arr;
     }
 
+    //gets array of User object that are mutual friends between two user specified by name
+    //return null if one of the users do not exist or if there are no mutuals between the users
     public User[] showMutualFriends(String friendName, String friendName2) {
 
         User user1 = getUserByName(friendName);
         User user2 = getUserByName(friendName2);
 
         if (user1 == null || user2 == null) {
-
             return null;
         }
 
@@ -218,6 +234,10 @@ public class User {
                     cnt++;
                 }
             }
+        }
+
+        if (cnt == 0) {
+            return null;
         }
 
         User[] arr = new User[cnt];

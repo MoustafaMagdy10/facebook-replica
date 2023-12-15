@@ -70,6 +70,7 @@ public class User {
         return birthDay;
     }
 
+
     public int getBirthMonth() {
         return birthMonth;
     }

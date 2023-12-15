@@ -13,6 +13,10 @@ public class Message {
         messageId=messageIdGenerator++;
     }
 
+    public String getContent(){
+        return message;
+    }
+
     public int getId() {
         return messageId;
     }

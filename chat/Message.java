@@ -13,7 +13,7 @@ public class Message {
         messageId=messageIdGenerator++;
     }
 
-    public int getMessageId() {
+    public int getId() {
         return messageId;
     }
 

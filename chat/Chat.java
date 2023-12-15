@@ -6,24 +6,25 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
+import com.sun.source.tree.Tree;
 import publications.User;
 
 public class Chat {
     private String chatName;
     private static int chatIdGenerator = 0;
+    private int chatId = 0;
     private static ArrayList<Message> messageStore=new ArrayList<>();
-    private ArrayList<Integer> participantsId;
+    private TreeSet<Integer> participantsId = new TreeSet<>();
     private TreeSet<Integer> messages = new TreeSet<Integer>();
 
 
-    public Chat(String chatName, ArrayList<Integer> participants) {
+    public Chat(String chatName, TreeSet<Integer> participants) {
         this.chatName = chatName;
         this.participantsId = participants;
-        chatIdGenerator++;
+        chatId = chatIdGenerator++;
     }
 
     // Getters and setters for chatName
-
     public String getChatName() {
         return chatName;
     }
@@ -54,38 +55,23 @@ public class Chat {
     }
 
     // Method to add message to the chat
-
     public void addMessage(int senderId,String content) {
-        Message newMessage = new Message(senderId,content);       //        create new Message Object
-//        check senderID and add created Message object inside array list
-        boolean patricipant=false;
-        for (int i=0 ; i< getParticipants().length;i++)
-            if (senderId== getParticipants()[i].getId()){
-                patricipant=true;
-                break;
-            }
-        if (patricipant){
-            messages.add(newMessage.getMessageId());
-            messageStore.add(newMessage);}
-        else
-            System.out.println("the user "+ User.getUserById(senderId).getId()+" is not allowed to send message on this chat.");
+        Message newMessage = new Message(senderId,content);
+        messages.add(newMessage.getId());
+        messageStore.add(newMessage);
     }
 
     // Method to add participant to the chat
-
     public void addParticipant(int userId) {
         participantsId.add(userId);
     }
 
     // Method to remove participant from the chat
-
     public void removeParticipant(int userId) {
         participantsId.remove(userId);
     }
 
     // Method to save chat data to a file
-
-
     public void saveChatToFile(String fileName) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(fileName,true))) {
             writer.println("Chat Name: " + chatName);

@@ -146,11 +146,11 @@ public class FileProcessing
          userWriter.newLine();
          userWriter.write(userData.getPassword());
          userWriter.newLine();
-         userWriter.write(userData.getBirthDay());
+         userWriter.write(String.valueOf(userData.getBirthDay()));
          userWriter.newLine();
-         userWriter.write(userData.getBirthMonth());
+         userWriter.write(String.valueOf(userData.getBirthMonth()));
          userWriter.newLine();
-         userWriter.write(userData.getBirthYear());
+         userWriter.write(String.valueOf(userData.getBirthYear()));
          userWriter.newLine();
          userWriter.write(userData.getPhoneNumber());
          userWriter.newLine();
@@ -159,7 +159,7 @@ public class FileProcessing
 
          for (Post userPost : userPosts)
          {
-             userWriter.write(userPost.getId());
+             userWriter.write(String.valueOf(userPost.getId()));
              userWriter.newLine();
          }
          userWriter.newLine();
@@ -175,7 +175,7 @@ public class FileProcessing
 
      for (Post postData : postArray)
      {
-         postWriter.write(postData.getPublisherId());
+         postWriter.write(String.valueOf(postData.getPublisherId()));
          postWriter.newLine();
          postWriter.write(postData.getContent());
          postWriter.newLine();
@@ -186,7 +186,7 @@ public class FileProcessing
 
          for (User postLiker : postLikers)
          {
-             postWriter.write(postLiker.getId());
+             postWriter.write(String.valueOf(postLiker.getId()));
              postWriter.newLine();
          }
          postWriter.newLine();
@@ -195,7 +195,7 @@ public class FileProcessing
 
          for (User postTag : postTags)
          {
-             postWriter.write(postTag.getId());
+             postWriter.write(String.valueOf(postTag.getId()));
              postWriter.newLine();
          }
          postWriter.newLine();
@@ -204,7 +204,7 @@ public class FileProcessing
 
          for (Comment postComment : postComments)
          {
-             postWriter.write(postComment.getId());
+             postWriter.write(String.valueOf(postComment.getId()));
              postWriter.newLine();
          }
          postWriter.newLine();
@@ -218,7 +218,7 @@ public class FileProcessing
 
      for (Comment commentData : commentArray)
      {
-         commentWriter.write(commentData.getPublisherId());
+         commentWriter.write(String.valueOf(commentData.getPublisherId()));
          commentWriter.newLine();
          commentWriter.write(commentData.getContent());
          commentWriter.newLine();
@@ -227,7 +227,7 @@ public class FileProcessing
 
          for (User commentsLike : commentLikes)
          {
-             commentWriter.write(commentsLike.getId());
+             commentWriter.write(String.valueOf(commentsLike.getId()));
              commentWriter.newLine();
          }
          commentWriter.newLine();
@@ -236,7 +236,7 @@ public class FileProcessing
 
          for (Reply commentReply : commentReplies)
          {
-             commentWriter.write(commentReply.getId());
+             commentWriter.write(String.valueOf(commentReply.getId()));
              commentWriter.newLine();
          }
          commentWriter.newLine();
@@ -250,7 +250,7 @@ public class FileProcessing
 
      for (Reply replyData : replyArray)
      {
-         replyWriter.write(replyData.getPublisherId());
+         replyWriter.write(String.valueOf(replyData.getPublisherId()));
          replyWriter.newLine();
          replyWriter.write(replyData.getContent());
          replyWriter.newLine();
@@ -258,7 +258,7 @@ public class FileProcessing
          User[] replyLikers = replyData.getLikes();
          for(User replyLiker : replyLikers)
          {
-             replyWriter.write(replyLiker.getId());
+             replyWriter.write(String.valueOf(replyLiker.getId()));
              replyWriter.newLine();
          }
          replyWriter.newLine();

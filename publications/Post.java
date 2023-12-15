@@ -19,14 +19,23 @@ public class Post extends LikablePublication {
         postId = postIdGenerator++;
     }
 
+    Post(int publisherId, String content, boolean isPublic, TreeSet<Integer> likes, TreeSet<Integer> tags, TreeSet<Integer> comments){
+        this(publisherId, content, isPublic);
+        for(int like : likes){
+            this.addLike(like);
+        }
+        this.tags = tags;
+        this.comments = comments;
+    }
+
     public void addComment(int publisherId, String content){
         Comment comment = new Comment(publisherId, content);
         comments.add(comment.getId());
         commentStore.add(comment);
     }
 
-    public static void loadComment(int publisherId, String content){
-        Comment comment = new Comment(publisherId, content);
+    public static void loadComment(int publisherId, String content, TreeSet<Integer> likes, TreeSet<Integer> replies){
+        Comment comment = new Comment(publisherId, content, likes, replies);
         commentStore.add(comment);
     }
 

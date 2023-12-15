@@ -1,6 +1,4 @@
 package publications;
-
-import java.lang.Integer;
 import java.util.ArrayList;
 import java.util.TreeSet;
 
@@ -36,8 +34,13 @@ public class User {
         userStore.add(this);
     }
 
-    // getters
-    public int getId() {
+    User(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts){
+        this(userName, gender, email, password, birthDay, birthMonth, birthYear, phoneNumber);
+        this.posts = posts;
+    }
+
+    //getters
+    public int getId(){
         return userId;
     }
 
@@ -108,6 +111,7 @@ public class User {
     }
 
     // functionality
+
 
     // used to add post in program runtime
     public void addPost(String content, boolean isPublic) {
@@ -255,9 +259,9 @@ public class User {
 
     }
 
-    // for loading from file when starting program
-    public static void loadPost(int publisherId, String content, boolean isPublic) {
-        Post post = new Post(publisherId, content, isPublic);
+    //for loading from file when starting program
+    public static void loadPost(int publisherId,String content, boolean isPublic, TreeSet<Integer>likes,TreeSet<Integer> tags,TreeSet<Integer> comments){
+        Post post = new Post(publisherId ,content, isPublic, likes, tags, comments);
         postStore.add(post);
     }
 
@@ -283,14 +287,14 @@ public class User {
         return userArr;
     }
 
-    public static void loadUser(String userName, String gender, String email, String password, int birthDay,
-            int birthMonth, int birthYear, String phoneNumber) {
-        User user = new User(userName, gender, email, password, birthDay, birthMonth, birthYear, phoneNumber);
-        userStore.add(user);
+
+    public static void loadUser(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts){
+       User user = new User(userName,gender,email,password,birthDay,birthMonth,birthYear,phoneNumber, posts);
+//       userStore.add(user);
     }
 
-    // returns the User of the specified
-    public static User getUserById(int userId) {
+    //returns the User of the specified id
+    public static User getUserById(int userId){
         return userStore.get(userId);
     }
 

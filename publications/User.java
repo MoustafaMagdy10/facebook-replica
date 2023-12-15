@@ -1,5 +1,6 @@
 package publications;
 import java.util.ArrayList;
+import chat.Chat;
 import java.util.TreeSet;
 
 public class User {
@@ -16,9 +17,11 @@ public class User {
 
     private static ArrayList<User> userStore = new ArrayList<User>();
     private static ArrayList<Post> postStore = new ArrayList<Post>();
+    private static ArrayList<Chat> chatStore = new ArrayList<Chat>();
     private TreeSet<Integer> posts = new TreeSet<>();
     private TreeSet<Integer> friends = new TreeSet<>();
     private TreeSet<Integer> pending = new TreeSet<>();
+    private TreeSet<Integer> chats = new TreeSet<>();
 
     public User(String userName, String gender, String email, String password, int birthDay, int birthMonth,
             int birthYear, String phoneNumber) {
@@ -34,9 +37,12 @@ public class User {
         userStore.add(this);
     }
 
-    User(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts){
+    User(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts, TreeSet<Integer> friends , TreeSet<Integer> pending, TreeSet<Integer> chats){
         this(userName, gender, email, password, birthDay, birthMonth, birthYear, phoneNumber);
         this.posts = posts;
+        this.friends = friends;
+        this.pending = pending;
+        this.chats = chats;
     }
 
     //getters
@@ -288,8 +294,8 @@ public class User {
     }
 
 
-    public static void loadUser(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts){
-       User user = new User(userName,gender,email,password,birthDay,birthMonth,birthYear,phoneNumber, posts);
+    public static void loadUser(String userName, String gender, String email, String password, int birthDay, int birthMonth, int birthYear, String phoneNumber, TreeSet<Integer> posts, TreeSet<Integer> friends, TreeSet<Integer> pending, TreeSet<Integer> chats){
+       User user = new User(userName,gender,email,password,birthDay,birthMonth,birthYear,phoneNumber, posts,friends,pending,chats);
 //       userStore.add(user);
     }
 
@@ -315,5 +321,35 @@ public class User {
 
         return postArr;
 
+    }
+
+    public Chat[] getChats(){
+       Chat[] arr = new Chat[chats.size()];
+       int cnt = 0;
+       for(int chat : chats){
+           arr[cnt++] = chatStore.get(chat);
+       }
+
+       for(int i =0; i<arr.length/2; i++){
+           Chat tmp = arr[i];
+           arr[i] = arr[arr.length - i - 1];
+           arr[arr.length - i - 1] = tmp;
+       }
+
+       return arr;
+    }
+
+    public static Chat[] exportChats(){
+       Chat[] arr = new Chat[chatStore.size()];
+       int cnt = 0;
+       for(Chat chat : chatStore){
+           arr[cnt++] = chat;
+       }
+       return arr;
+    }
+
+    public static void loadChat(String chatName, TreeSet<Integer> participants, TreeSet<Integer> messages){
+        Chat chat = new Chat(chatName, participants, messages);
+        chatStore.add(chat);
     }
 }

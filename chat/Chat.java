@@ -24,6 +24,11 @@ public class Chat {
         chatId = chatIdGenerator++;
     }
 
+    public Chat(String chatName, TreeSet<Integer> participants, TreeSet<Integer> messages){
+        this(chatName,participants);
+        this.messages = messages;
+    }
+
     // Getters and setters for chatName
     public String getChatName() {
         return chatName;
@@ -69,6 +74,21 @@ public class Chat {
     // Method to remove participant from the chat
     public void removeParticipant(int userId) {
         participantsId.remove(userId);
+    }
+
+    public static void loadMessage(int senderId, String message){
+        Message msg = new Message(senderId, message);
+        messageStore.add(msg);
+    }
+
+    public static Message[] exportMessages(){
+        Message[] arr = new Message[messageStore.size()];
+        int cnt =0;
+        for(Message msg : messageStore){
+            arr[cnt++] = msg;
+        }
+
+        return arr;
     }
 
     // Method to save chat data to a file

@@ -149,7 +149,7 @@ public class User {
 //       userStore.add(user);
     }
 
-    //returns the User of the specified
+    //returns the User of the specified id
     public static User getUserById(int userId){
         return userStore.get(userId);
     }

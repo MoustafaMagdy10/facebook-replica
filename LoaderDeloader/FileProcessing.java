@@ -133,7 +133,7 @@ public class FileProcessing
  {
      //Export data of user
 
-     BufferedWriter userWriter = new BufferedWriter(new FileWriter("LoaderDeloader/UserData.txt",true));
+     BufferedWriter userWriter = new BufferedWriter(new FileWriter("LoaderDeloader/UserData.txt"));
      User[] userArray = User.exportUsers();
 
      for(User userData : userArray)
@@ -168,10 +168,9 @@ public class FileProcessing
      ///////////////////////////
      //Export data of posts
 
-     BufferedWriter postWriter = new BufferedWriter(new FileWriter("LoaderDeloader/PostData.txt",true));
+     BufferedWriter postWriter = new BufferedWriter(new FileWriter("LoaderDeloader/PostData.txt"));
      Post[] postArray = User.exportPosts();
-
-     Post post = new Post(-1,"test",true);
+     
 
      for (Post postData : postArray)
      {
@@ -213,7 +212,7 @@ public class FileProcessing
      ///////////////////////////
      //Export data of comments
 
-     BufferedWriter commentWriter = new BufferedWriter(new FileWriter("LoaderDeloader/CommentData.txt",true));
+     BufferedWriter commentWriter = new BufferedWriter(new FileWriter("LoaderDeloader/CommentData.txt"));
      Comment[] commentArray = Post.exportComments();
 
      for (Comment commentData : commentArray)
@@ -245,7 +244,7 @@ public class FileProcessing
      ///////////////////////////
      //Export data of replies
 
-     BufferedWriter replyWriter = new BufferedWriter(new FileWriter("LoaderDeloader/ReplyData.txt",true));
+     BufferedWriter replyWriter = new BufferedWriter(new FileWriter("LoaderDeloader/ReplyData.txt"));
      Reply[] replyArray = Comment.exportReply();
 
      for (Reply replyData : replyArray)

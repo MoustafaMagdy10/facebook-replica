@@ -1,20 +1,25 @@
 package LoaderDeloader;
 
+import chat.Chat;
+import chat.Message;
 import publications.Comment;
 import publications.Post;
 import publications.Reply;
 import publications.User;
 
 import java.io.*;
+import java.util.Scanner;
 import java.util.TreeSet;
+
 
 public class FileProcessing
 {
  public static void loadingData() throws IOException
  {
      //Loading data of users
+     File userFile =new File("LoaderDeloader/UserData.txt");
 
-     BufferedReader userReader = new BufferedReader(new FileReader("LoaderDeloader/UserData.txt"));
+     Scanner userReader = new Scanner(userFile);
 
      String data;
 
@@ -27,28 +32,58 @@ public class FileProcessing
      int birthYear;
      String phoneNumber;
      TreeSet<Integer> posts = new TreeSet<>();
+     TreeSet<Integer> friends = new TreeSet<>();
+     TreeSet<Integer> pending = new TreeSet<>();
+     TreeSet<Integer> chats = new TreeSet<>();
 
-         while ((data = userReader.readLine()) != null)
-         {
-             userName = data;
-             gender = userReader.readLine();
-             email = userReader.readLine();
-             password = userReader.readLine();
-             birthDay = Integer.parseInt(userReader.readLine());
-             birthMonth = Integer.parseInt(userReader.readLine());
-             birthYear = Integer.parseInt(userReader.readLine());
-             phoneNumber = userReader.readLine();
-             while ((data = userReader.readLine()) != null)
-             {
-                 posts.add(Integer.parseInt(data));
+
+         while (userReader.hasNext()) {
+             userName = userReader.nextLine();
+             gender = userReader.nextLine();
+             email = userReader.nextLine();
+             password = userReader.nextLine();
+             birthDay = Integer.parseInt(userReader.nextLine());
+             birthMonth = Integer.parseInt(userReader.nextLine());
+             birthYear = Integer.parseInt(userReader.nextLine());
+             phoneNumber = userReader.nextLine();
+
+             String post = userReader.nextLine();
+             Scanner postScanner = new Scanner(post);
+
+             while (postScanner.hasNextInt()) {
+                 posts.add(postScanner.nextInt());
+
              }
 
-             User.loadUser(userName,gender,email,password,birthDay,birthMonth,birthYear,phoneNumber,posts);
+             String friend = userReader.nextLine();
+             Scanner friendScanner = new Scanner(friend);
+
+             while (friendScanner.hasNextInt()) {
+                 friends.add(friendScanner.nextInt());
+             }
+
+             String pendings = userReader.nextLine();
+             Scanner pendingsScanner = new Scanner(pendings);
+
+             while (pendingsScanner.hasNextInt()) {
+                 pending.add(pendingsScanner.nextInt());
+             }
+
+             String chat = userReader.nextLine();
+             Scanner chatScanner = new Scanner(chat);
+
+             while (chatScanner.hasNextInt()) {
+                 chats.add(chatScanner.nextInt());
+             }
+
+             User.loadUser(userName, gender, email, password, birthDay, birthMonth, birthYear, phoneNumber, posts, friends, pending, chats);
          }
      /////////////////////////////////
      //Loading data of posts
 
-     BufferedReader postReader = new BufferedReader(new FileReader("LoaderDeloader/PostData.txt"));
+     File postFile = new File("LoaderDeloader/PostData.txt");
+
+     Scanner postReader = new Scanner(postFile);
      int publisherId;
      String content;
      boolean isPublic;
@@ -56,51 +91,67 @@ public class FileProcessing
      TreeSet<Integer> tags = new TreeSet<>();
      TreeSet<Integer> comments = new TreeSet<>();
 
-     while ((data = postReader.readLine()) != null)
+     while (postReader.hasNext())
      {
-         publisherId = Integer.parseInt(data);
-         content = postReader.readLine();
-         isPublic = Boolean.parseBoolean(postReader.readLine());
+         publisherId = Integer.parseInt(postReader.nextLine());
+         content = postReader.nextLine();
+         isPublic = Boolean.parseBoolean(postReader.nextLine());
 
-         while ((data = postReader.readLine()) != null)
+         String like = postReader.nextLine();
+         Scanner likeScanner = new Scanner(like);
+
+         while (likeScanner.hasNextInt())
          {
-             likes.add(Integer.parseInt(data));
+             likes.add(likeScanner.nextInt());
          }
 
-         while ((data = postReader.readLine()) != null)
+         String tag = postReader.nextLine();
+         Scanner tagScanner = new Scanner(tag);
+
+         while (tagScanner.hasNextInt())
          {
-             tags.add(Integer.parseInt(data));
+             tags.add(tagScanner.nextInt());
          }
 
-         while ((data = postReader.readLine()) != null)
+         String comment = postReader.nextLine();
+         Scanner commentScanner = new Scanner(comment);
+
+         while (commentScanner.hasNextInt())
          {
-             comments.add(Integer.parseInt(data));
+             comments.add(commentScanner.nextInt());
          }
 
          User.loadPost(publisherId,content,isPublic,likes,tags,comments);
      }
      /////////////////////////////////
      //Loading data of comments
+     File commentFile = new File("LoaderDeloader/CommentData.txt");
 
-     BufferedReader commentReader = new BufferedReader(new FileReader("LoaderDeloader/CommentData.txt"));
+     Scanner commentReader = new Scanner(commentFile);
      int commentPublisherId;
      String commentContent;
      TreeSet<Integer> commentLikes = new TreeSet<>();
      TreeSet<Integer> replies = new TreeSet<>();
 
-     while ((data = commentReader.readLine()) != null)
+     while (commentReader.hasNext())
      {
-         commentPublisherId = Integer.parseInt(data);
-         commentContent = commentReader.readLine();
+         commentPublisherId = Integer.parseInt(commentReader.nextLine());
+         commentContent = commentReader.nextLine();
 
-         while ((data = commentReader.readLine()) != null)
+         String commentLike = commentReader.nextLine();
+         Scanner commentScanner = new Scanner(commentLike);
+
+         while (commentScanner.hasNextInt())
          {
-             commentLikes.add(Integer.parseInt(data));
+             commentLikes.add(commentScanner.nextInt());
          }
 
-         while ((data = commentReader.readLine()) != null)
+         String reply = commentReader.nextLine();
+         Scanner replyScanner = new Scanner(reply);
+
+         while (replyScanner.hasNextInt())
          {
-            replies.add(Integer.parseInt(data));
+            replies.add(replyScanner.nextInt());
          }
 
          Post.loadComment(commentPublisherId,commentContent,commentLikes,replies);
@@ -108,22 +159,75 @@ public class FileProcessing
      /////////////////////////////////
      //Loading data of replies
 
-     BufferedReader replyReader = new BufferedReader(new FileReader("LoaderDeloader/ReplyData.txt"));
+     File replyFile = new File("LoaderDeloader/ReplyData.txt");
+
+     Scanner replyReader = new Scanner(replyFile);
      int replyPublisherId;
      String replyContent;
      TreeSet<Integer> replyLikes = new TreeSet<>();
 
-     while ((data = replyReader.readLine()) != null)
+     while (replyReader.hasNext())
      {
-         replyPublisherId = Integer.parseInt(data);
-         replyContent = replyReader.readLine();
+         replyPublisherId = Integer.parseInt(replyReader.nextLine());
+         replyContent = replyReader.nextLine();
 
-         while ((data = replyReader.readLine()) != null)
+         String replyLike = replyReader.nextLine();
+         Scanner replyLikeScanner = new Scanner(replyLike);
+
+         while (replyLikeScanner.hasNextInt())
          {
-             replyLikes.add(Integer.parseInt(data));
+             replyLikes.add(replyLikeScanner.nextInt());
          }
 
          Comment.loadReply(replyPublisherId,replyContent,replyLikes);
+     }
+     /////////////////////////////////
+     //Loading data of chats
+
+     File chatFile = new File("LoaderDeloader/ChatsData.txt");
+
+     Scanner chatReader = new Scanner(chatFile);
+     String chatName;
+     TreeSet<Integer> participants = new TreeSet<>();
+     TreeSet<Integer> messages = new TreeSet<>();
+
+     while (chatReader.hasNext())
+     {
+         chatName = chatReader.nextLine();
+
+         String participant = chatReader.nextLine();
+         Scanner participantScanner = new Scanner(participant);
+
+         while (participantScanner.hasNextInt())
+         {
+             participants.add(participantScanner.nextInt());
+         }
+
+         String message = chatReader.nextLine();
+         Scanner messageScanner = new Scanner(message);
+
+         while (messageScanner.hasNextInt())
+         {
+             messages.add(messageScanner.nextInt());
+         }
+
+         User.loadChat(chatName,participants,messages);
+     }
+     /////////////////////////////////
+     //Loading data of messages
+
+     File messageFile = new File("LoaderDeloader/MessagesData.txt");
+
+     Scanner messageReader = new Scanner(messageFile);
+     int senderId;
+     String message;
+
+     while (messageReader.hasNext())
+     {
+         senderId = Integer.parseInt(messageReader.nextLine());
+         message = messageReader.nextLine();
+
+         Chat.loadMessage(senderId,message);
      }
 
  }
@@ -136,8 +240,7 @@ public class FileProcessing
      BufferedWriter userWriter = new BufferedWriter(new FileWriter("LoaderDeloader/UserData.txt"));
      User[] userArray = User.exportUsers();
 
-     for(User userData : userArray)
-     {
+     for(User userData : userArray) {
          userWriter.write(userData.getUserName());
          userWriter.newLine();
          userWriter.write(userData.getGender());
@@ -157,11 +260,39 @@ public class FileProcessing
 
          Post[] userPosts = userData.getPosts();
 
-         for (Post userPost : userPosts)
-         {
-             userWriter.write(String.valueOf(userPost.getId()));
-             userWriter.newLine();
+         if (userPosts != null) {
+             for (Post userPost : userPosts) {
+                 userWriter.write(String.valueOf(userPost.getId())+" ");
+             }
          }
+         userWriter.newLine();
+         //
+         User[] userFriends = userData.getFriends();
+
+         if (userFriends != null) {
+             for (User userFriend : userFriends) {
+                 userWriter.write(String.valueOf(userFriend.getId())+" ");
+             }
+         }
+         userWriter.newLine();
+         //
+         User[] userPendings = userData.getFriendRequests();
+
+         if (userPendings != null) {
+             for (User userPending : userPendings) {
+                 userWriter.write(String.valueOf(userPending.getId())+" ");
+             }
+         }
+         userWriter.newLine();
+         //
+         Chat[] userChats = userData.getChats();
+
+         if (userChats != null) {
+             for (Chat userChat : userChats) {
+                 userWriter.write(String.valueOf(userChat.getChatId())+" ");
+             }
+         }
+
          userWriter.newLine();
      }
      userWriter.close();
@@ -170,7 +301,6 @@ public class FileProcessing
 
      BufferedWriter postWriter = new BufferedWriter(new FileWriter("LoaderDeloader/PostData.txt"));
      Post[] postArray = User.exportPosts();
-     
 
      for (Post postData : postArray)
      {
@@ -183,28 +313,28 @@ public class FileProcessing
 
          User[] postLikers = postData.getLikes();
 
-         for (User postLiker : postLikers)
-         {
-             postWriter.write(String.valueOf(postLiker.getId()));
-             postWriter.newLine();
+         if(postLikers != null) {
+             for (User postLiker : postLikers) {
+                 postWriter.write(String.valueOf(postLiker.getId())+" ");
+             }
          }
          postWriter.newLine();
          //
          User[] postTags = postData.getTags();
 
-         for (User postTag : postTags)
-         {
-             postWriter.write(String.valueOf(postTag.getId()));
-             postWriter.newLine();
+         if(postTags != null) {
+             for (User postTag : postTags) {
+                 postWriter.write(String.valueOf(postTag.getId())+" ");
+             }
          }
          postWriter.newLine();
          //
          Comment[] postComments = postData.getComments();
 
-         for (Comment postComment : postComments)
-         {
-             postWriter.write(String.valueOf(postComment.getId()));
-             postWriter.newLine();
+         if(postComments != null) {
+             for (Comment postComment : postComments) {
+                 postWriter.write(String.valueOf(postComment.getId())+" ");
+             }
          }
          postWriter.newLine();
      }
@@ -224,19 +354,19 @@ public class FileProcessing
 
          User[] commentLikes = commentData.getLikes();
 
-         for (User commentsLike : commentLikes)
-         {
-             commentWriter.write(String.valueOf(commentsLike.getId()));
-             commentWriter.newLine();
+         if(commentLikes != null) {
+             for (User commentsLike : commentLikes) {
+                 commentWriter.write(String.valueOf(commentsLike.getId())+" ");
+             }
          }
          commentWriter.newLine();
          //
          Reply[] commentReplies = commentData.getReplies();
 
-         for (Reply commentReply : commentReplies)
-         {
-             commentWriter.write(String.valueOf(commentReply.getId()));
-             commentWriter.newLine();
+         if(commentReplies != null) {
+             for (Reply commentReply : commentReplies) {
+                 commentWriter.write(String.valueOf(commentReply.getId())+" ");
+             }
          }
          commentWriter.newLine();
      }
@@ -255,14 +385,58 @@ public class FileProcessing
          replyWriter.newLine();
 
          User[] replyLikers = replyData.getLikes();
-         for(User replyLiker : replyLikers)
-         {
-             replyWriter.write(String.valueOf(replyLiker.getId()));
-             replyWriter.newLine();
+
+         if(replyLikers != null) {
+             for (User replyLiker : replyLikers) {
+                 replyWriter.write(String.valueOf(replyLiker.getId())+" ");
+             }
          }
          replyWriter.newLine();
      }
      replyWriter.close();
+     ///////////////////////////
+     //Export data of chats
+
+     BufferedWriter chatWriter = new BufferedWriter(new FileWriter("LoaderDeloader/ChatsData.txt"));
+     Chat[] chatArray = User.exportChats();
+
+     for (Chat chatData : chatArray)
+     {
+         chatWriter.write(chatData.getChatName());
+         chatWriter.newLine();
+
+         User[] chatParticipants = chatData.getParticipants();
+
+         if(chatParticipants != null) {
+             for (User chatParticipant : chatParticipants) {
+                 chatWriter.write(String.valueOf(chatParticipant.getId())+" ");
+             }
+         }
+         chatWriter.newLine();
+         //
+         Message[] chatMessages = chatData.getMessages();
+
+         if(chatMessages != null) {
+             for (Message chatMessage : chatMessages) {
+                 chatWriter.write(String.valueOf(chatMessage.getId())+" ");
+             }
+         }
+         chatWriter.newLine();
+     }
+     chatWriter.close();
+     ///////////////////////////
+     //Export data of messages
+
+     BufferedWriter messageWriter = new BufferedWriter(new FileWriter("LoaderDeloader/MessagesData.txt"));
+     Message[] messageArray = Chat.exportMessages();
+
+     for (Message messageData : messageArray)
+     {
+         messageWriter.write(String.valueOf(messageData.getSenderId()));
+         messageWriter.newLine();
+         messageWriter.write(messageData.getMessage());
+         messageWriter.newLine();
+     }
  }
 
 }

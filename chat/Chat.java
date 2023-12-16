@@ -130,4 +130,6 @@ public class Chat {
             System.out.println("Error loading chat data");
         }
     }
+
+    public int getChatId(){return chatId;}
 }

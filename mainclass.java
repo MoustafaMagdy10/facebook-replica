@@ -1,9 +1,14 @@
+import LoaderDeloader.FileProcessing;
 import publications.Comment;
 import publications.Post;
 import publications.User;
 
+import javax.imageio.IIOException;
+import java.io.IOException;
+
 public class mainclass {
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
+        FileProcessing.loadingData();
         User user1 = new User("mostafa", "male","m@gmail.com", "pass",20,1,22,"12");
         User user2 = new User("gamal", "male","m@gmail.com", "pass",20,1,22,"12");
         User[] users = User.exportUsers();
@@ -41,7 +46,9 @@ public class mainclass {
         for (User liker : likers){
             System.out.println(liker.getUserName());
         }
+        User user10 = new User("ali","m","@","23213",1,11,1111,"4523523525");
 
+        FileProcessing.exportData();
 
     }
 }

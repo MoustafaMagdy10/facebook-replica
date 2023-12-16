@@ -25,4 +25,10 @@ public class Message {
     public String toString() {
         return senderId+ ": "+message;
     }
+
+
+    public int getSenderId(){return senderId;}
+
+
+    public String getMessage(){return message;}
 }

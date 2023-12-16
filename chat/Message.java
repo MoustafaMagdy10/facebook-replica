@@ -2,6 +2,7 @@ package chat;
 
 public class Message {
     private String message;
+
     private int senderId;
     private static int messageIdGenerator=0;
     private int messageId;
@@ -21,6 +22,9 @@ public class Message {
         return messageId;
     }
 
+    public int getSenderId() {
+        return senderId;
+    }
 
     public String toString() {
         return senderId+ ": "+message;
